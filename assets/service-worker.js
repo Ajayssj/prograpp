@@ -16,7 +16,8 @@ self.addEventListener('install', (event) => {
   const filesToCache = [
     '/',
     'script.js',
-    'index.html'
+    'index.html',
+    'style.css'
   ];
   
   const staticCacheName = 'pages-cache-v1';
