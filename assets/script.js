@@ -1,9 +1,9 @@
 const divInstall = document.getElementById('installContainer');
 const butInstall = document.getElementById('butInstall');
 const publicVapidKey = 'BHN6mABMK8fphERQfNd3eWQ6y3iwhMzRj0L7j-_iO2em0qTEVE9UC1Ss5c38ih0RmO-6FIh-U8P71iiV25yHbkA';
-
+const userId = uuidv1();
 /* Put code here */
-
+console.info('My UUID : ', userId );
 
 let deferredPrompt;
 /* Only register a service worker if it's supported */
@@ -11,23 +11,30 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/service-worker.js')
   .then( async function(registration) {
     console.log("Service Worker registered successfully");
-    const subscription = await registration.pushManager.
-    subscribe({
-      userVisibleOnly: true,
-      // The `urlBase64ToUint8Array()` function is the same as in
-      // https://www.npmjs.com/package/web-push#using-vapid-key-for-applicationserverkey
-      applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
-    });
-    console.log('Registered push');
+    try{
+        const subscription = await registration.pushManager.
+        subscribe({
+          userVisibleOnly: true,
+          // The `urlBase64ToUint8Array()` function is the same as in
+          // https://www.npmjs.com/package/web-push#using-vapid-key-for-applicationserverkey
+          applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+        });
+        console.log('Registered push');
 
-    console.log('Sending push');
-    await fetch('/subscribe', {
-      method: 'POST',
-      body: JSON.stringify(subscription),
-      headers: {
-        'content-type': 'application/json'
+        console.log('Sending push');
+        await fetch('/subscribe', {
+          method: 'POST',
+          body: JSON.stringify({
+            userId : userId,
+            subscription
+            })  ,
+          headers: {
+            'content-type': 'application/json'
+          }
+        });
+      }catch(err){
+        console.error(err);
       }
-    });
   })
   .catch(function() {
     console.log("Service worker registration failed")
