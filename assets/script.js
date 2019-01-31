@@ -18,9 +18,14 @@ if ('serviceWorker' in navigator) {
 
 
 window.addEventListener('beforeinstallprompt',function(event){
-  // event.preventDefault();
-  // deferredPrompt = event;
-  // butInstall.style.display = 'block';
+  event.preventDefault();
+  deferredPrompt = event;
+  butInstall.addEventListener('click',function(event){
+    alert('Button Clicked')
+    deferredPrompt.prompt()
+  })
+  butInstall.style.display = 'block';
+
 })
 /**
  * Warn the page must be served over HTTPS
