@@ -20,7 +20,7 @@ self.addEventListener('install', (event) => {
     'style.css'
   ];
   
-  const staticCacheName = 'pages-cache-v1';
+  const staticCacheName = 'pages-cache-v2';
 
   
   self.addEventListener('install', event => {
@@ -53,4 +53,23 @@ self.addEventListener('install', (event) => {
   
       })
     );
+  });
+  self.addEventListener('notificationclick', function(event) {
+    event.notification.close();
+    event.waitUntil(
+      clients.openWindow(event.notification.data.url)
+      
+    );
+  })
+  self.addEventListener('push', ev => {
+    const data = ev.data.json();
+    console.log('Got push', data);
+    self.registration.showNotification(data.title, {
+      body: data.body,
+      icon: data.icon,
+      data : {
+        url : data.url
+      },
+      requireInteraction: true
+    });
   });
