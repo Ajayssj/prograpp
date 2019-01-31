@@ -36,11 +36,17 @@ window.addEventListener('beforeinstallprompt',function(event){
       }).catch(function(err){
         console.error(err);
       });
-    
   })
+  
   butInstall.style.display = 'block';
 
 })
+
+window.addEventListener('appinstalled', (evt) => {
+   alert('Your App Installed Successfully@');
+});
+
+
 /**
  * Warn the page must be served over HTTPS
  * The `beforeinstallprompt` event won't fire if the page is served over HTTP.
