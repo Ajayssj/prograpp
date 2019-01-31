@@ -4,7 +4,7 @@ const butInstall = document.getElementById('butInstall');
 /* Put code here */
 
 
-
+let deferredPrompt;
 /* Only register a service worker if it's supported */
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/service-worker.js')
@@ -16,6 +16,12 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+
+window.addEventListener('beforeinstallprompt',function(event){
+  event.preventDefault();
+  deferredPrompt = event;
+  butInstall.style.display = 'block';
+})
 /**
  * Warn the page must be served over HTTPS
  * The `beforeinstallprompt` event won't fire if the page is served over HTTP.
